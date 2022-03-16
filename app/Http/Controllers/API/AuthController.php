@@ -7,9 +7,10 @@ use App\Http\Requests\Auth\LoginRequest;
 class AuthController extends ApiBaseController
 {
     /**
-     * API login
+     * Login api
+     *
      * @param LoginRequest $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\JsonResponse|object
      */
     public function login(LoginRequest $request) {
         $cred = $request->validated();
@@ -25,7 +26,8 @@ class AuthController extends ApiBaseController
 
     /**
      * API info user
-     * @return array
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function me() {
         $user = auth()->user();
@@ -34,6 +36,7 @@ class AuthController extends ApiBaseController
 
     /**
      * API logout
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function logout() {

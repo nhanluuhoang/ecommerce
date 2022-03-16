@@ -15,8 +15,14 @@ class UserFactory extends Factory
     {
         return [
             'full_name' => $this->faker->name(),
-            'email' => $this->faker->unique()->safeEmail(),
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'email'     => $this->faker->unique()->safeEmail(),
+            'password'  => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'address'   => '{
+                address_1 : {
+                    address : 39 Nguyễn Thị Diệu, Phường 6, Quận 3, TP.Hồ Chí Minh,
+                    default : true
+                }
+            }'
         ];
     }
 }
