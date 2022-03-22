@@ -12,12 +12,19 @@ trait Response
      * @param $data
      * @return JsonResponse
      */
-    public function httpOK($data)
+    public function httpOK($data): JsonResponse
     {
-        return response()->json([
+        $arrData = $data->toArray();
+        $resp = [
             'success' => true,
-            'data'    => $data
-        ], JsonResponse::HTTP_OK);
+            'data'    => empty($arrData['data']) ? $data : $arrData['data']
+        ];
+
+        if (isset($arrData['current_page'])) {
+            $resp['pagination'] = $this->getPagination($data);
+        }
+
+        return response()->json($resp, JsonResponse::HTTP_OK);
     }
 
     /**
@@ -68,5 +75,21 @@ trait Response
     public function httpResponse($data, int $statusCode = JsonResponse::HTTP_OK)
     {
         return response()->json($data)->setStatusCode($statusCode);
+    }
+
+    /**
+     * @param $data
+     * @return array
+     */
+    private function getPagination($data): array
+    {
+        return [
+            'count'       => $data->count(),
+            'currentPage' => $data->currentPage(),
+            'links'       => $data->nextPageUrl(),
+            'perPage'     => $data->perPage(),
+            'total'       => $data->total(),
+            'totalPages'  => $data->lastPage()
+        ];
     }
 }
