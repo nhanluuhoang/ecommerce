@@ -19,7 +19,6 @@ class Category extends BaseModel
         'slug',
         'sort_order',
         'is_public',
-        'thumbnail'
     ];
 
     /**
@@ -34,5 +33,16 @@ class Category extends BaseModel
                 'source' => 'name'
             ]
         ];
+    }
+
+    /**
+     * Scope is_public
+     *
+     * @param $query
+     * @return mixed
+     */
+    public function scopeIsPublic($query)
+    {
+        return $query->where('is_public', true);
     }
 }
