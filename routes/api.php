@@ -3,6 +3,8 @@
 use App\Http\Controllers\API\AddressController;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\CategoryController;
+use App\Http\Controllers\API\OptionController;
+use App\Http\Controllers\API\OptionValueController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,6 +27,8 @@ Route::middleware('language')->group(function () {
 
         Route::apiResource('categories', CategoryController::class);
 
+        Route::apiResource('options', OptionController::class)->except(['update', 'destroy']);
 
+        Route::apiResource('option-values', OptionValueController::class)->except(['update', 'destroy']);
     });
 });
