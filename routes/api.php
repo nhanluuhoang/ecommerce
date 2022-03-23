@@ -1,9 +1,10 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API\AddressController;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\CategoryController;
-use App\Http\Controllers\API\AddressController;
+use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -14,14 +15,16 @@ use App\Http\Controllers\API\AddressController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::post('login', [AuthController::class, 'login']);
+Route::middleware('language')->group(function () {
+    Route::post('login', [AuthController::class, 'login']);
 
-Route::middleware('auth')->group(function () {
-    Route::get('me', [AuthController::class, 'me']);
-    Route::delete('logout', [AuthController::class, 'logout']);
-    Route::get('addresses', [AddressController::class, 'index']);
+    Route::middleware('auth')->group(function () {
+        Route::get('me', [AuthController::class, 'me']);
+        Route::delete('logout', [AuthController::class, 'logout']);
+        Route::get('addresses', [AddressController::class, 'index']);
 
-    Route::apiResource('categories', CategoryController::class);
+        Route::apiResource('categories', CategoryController::class);
 
 
+    });
 });
