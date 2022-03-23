@@ -30,10 +30,10 @@ trait Response
     /**
      * Build an HTTP_CREATED response.
      *
-     * @param array $data
+     * @param $data
      * @return JsonResponse
      */
-    public function httpCreated(array $data = [])
+    public function httpCreated($data)
     {
         return response()->json([
             'success' => true,

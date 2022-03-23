@@ -2,10 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Address;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Rap2hpoutre\FastExcel\FastExcel;
 
 class AddressSeeder extends Seeder
 {

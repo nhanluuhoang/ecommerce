@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Enums\AddressKindEnum;
 
 class CreateAddressTable extends Migration
 {
@@ -15,9 +16,9 @@ class CreateAddressTable extends Migration
     {
         Schema::create('addresses', function (Blueprint $table) {
             $table->id();
-            $table->string('kind');
+            $table->integer('kind')->index();
             $table->string('name');
-            $table->string('parent_id')->nullable();
+            $table->integer('parent_id')->index();
         });
     }
 
