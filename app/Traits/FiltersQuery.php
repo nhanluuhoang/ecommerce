@@ -53,7 +53,7 @@ trait FiltersQuery
                 throw new InvalidFilterQuery("Allowed filter are `{$key}`. Filter by `{$allowKeys}` are not allowed.");
             }
 
-            $this->filterClassification($key, $operator);
+            $this->filterClassification($key, $filters[$key]);
         }
 
         return $this;

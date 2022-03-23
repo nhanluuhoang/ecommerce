@@ -21,6 +21,10 @@ class Category extends BaseModel
         'is_public',
     ];
 
+    protected $casts = [
+        'is_public' => 'boolean'
+    ];
+
     /**
      * Return the sluggable configuration array for this model.
      *

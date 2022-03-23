@@ -1,8 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use \App\Http\Controllers\API\AuthController;
-use \App\Http\Controllers\API\CategoryController;
+use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\CategoryController;
+use App\Http\Controllers\API\AddressController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -18,7 +19,9 @@ Route::post('login', [AuthController::class, 'login']);
 Route::middleware('auth')->group(function () {
     Route::get('me', [AuthController::class, 'me']);
     Route::delete('logout', [AuthController::class, 'logout']);
+    Route::get('addresses', [AddressController::class, 'index']);
 
     Route::apiResource('categories', CategoryController::class);
+
 
 });
