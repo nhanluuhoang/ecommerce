@@ -1,11 +1,12 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AddressController;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\CategoryController;
 use App\Http\Controllers\API\OptionController;
 use App\Http\Controllers\API\OptionValueController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +25,8 @@ Route::middleware('language')->group(function () {
         Route::get('me', [AuthController::class, 'me']);
         Route::delete('logout', [AuthController::class, 'logout']);
         Route::get('addresses', [AddressController::class, 'index']);
+
+        Route::apiResource('users', UserController::class);
 
         Route::apiResource('categories', CategoryController::class);
 

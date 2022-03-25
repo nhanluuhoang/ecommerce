@@ -6,13 +6,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\HasApiTokens;
 use Nette\Utils\Json;
+use Spatie\Permission\Traits\HasRoles;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
 {
-    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -22,8 +24,14 @@ class User extends Authenticatable implements JWTSubject
     protected $fillable = [
         'full_name',
         'email',
+        'phone',
+        'gender',
         'password',
         'address'
+    ];
+
+    protected $casts = [
+        'address' => 'array'
     ];
 
     /**
@@ -56,12 +64,11 @@ class User extends Authenticatable implements JWTSubject
     }
 
     /**
-     * Get value address
-     *
      * @param $value
-     * @return mixed
+     * @return void
      */
-    public function getAddressAttribute($value) {
-        return json_decode($value);
+    public function setPasswordAttribute($value)
+    {
+        $this->attributes['password'] = Hash::make($value);
     }
 }
