@@ -18,7 +18,8 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class,
             OptionSeeder::class,
             ProductSeeder::class,
-            AddressSeeder::class
+            AddressSeeder::class,
+            ShelfRolesSeeder::class
         ]);
     }
 }
