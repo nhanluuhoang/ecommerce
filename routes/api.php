@@ -8,6 +8,7 @@ use App\Http\Controllers\API\OptionController;
 use App\Http\Controllers\API\OptionValueController;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\ProductController;
+use App\Http\Controllers\API\OrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,5 +37,7 @@ Route::middleware('language')->group(function () {
         Route::apiResource('option-values', OptionValueController::class)->except(['update', 'destroy']);
 
         Route::apiResource('products', ProductController::class);
+
+        Route::apiResource('orders', OrderController::class);
     });
 });

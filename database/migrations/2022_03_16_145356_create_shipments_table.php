@@ -18,9 +18,9 @@ class CreateShipmentsTable extends Migration
             $table->id();
             $table->foreignId('order_id')->constrained('orders');
             $table->foreignId('invoice_id')->constrained('invoices');
-            $table->string('name');
+            $table->string('full_name');
             $table->string('phone');
-            $table->string('address');
+            $table->json('address');
             $table->string('order_code')->index();
             $table->dateTime('shipment_date')->nullable();
             $table->enum('shipment_status', ShipmentStatusEnum::getValues())->default(ShipmentStatusEnum::WAITING)->index();

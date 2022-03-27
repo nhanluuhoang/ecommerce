@@ -4,7 +4,7 @@ namespace App\Enums;
 
 final class InvoiceStatusCodeEnum extends AbstractEnum
 {
-    const COD = 0;
+    const COD = '0';
 
-    const PAID = 1;
+    const PAID = '1';
 }

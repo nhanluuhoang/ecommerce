@@ -31,9 +31,9 @@ class UpdateUserRequest extends FormRequest
             'phone'                => 'sometimes|alpha_num|digits_between:10,11|unique:users,phone',
             'gender'               => ['sometimes', 'string', Rule::in(['male', 'female'])],
             'address'              => 'sometimes',
-            'address.*.address'    => 'required_with_all:address|string',
-            'address.*.address_id' => 'required_with_all:address|string',
-            'address.*.default'    => 'required_with_all:address|boolean',
+            'address.*.address'    => 'required_with:address|string',
+            'address.*.address_id' => 'required_with:address|string',
+            'address.*.default'    => 'required_with:address|boolean',
         ];
     }
 }

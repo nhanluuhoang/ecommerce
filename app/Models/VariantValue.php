@@ -2,9 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-
 class VariantValue extends BaseModel
 {
     /**
@@ -16,7 +13,7 @@ class VariantValue extends BaseModel
         'product_id',
         'option_id',
         'value_id',
-        'variant_value_name',
+        'product_value_name',
         'sku',
         'quantity',
         'price'

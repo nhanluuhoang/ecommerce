@@ -49,7 +49,7 @@ class CreateProductRequest extends FormRequest
                 'integer',
                 new ExistOptionAndValueRule($this->get('option_values', []))
             ],
-            'variant_values.*.variant_value_name' => 'required|string',
+            'variant_values.*.product_value_name' => 'required|string',
             'variant_values.*.sku'                => 'required|string',
             'variant_values.*.price'              => 'required|regex:/^[0-9]+(\.[0-9][0-9]?)?$/|min:0',
             'variant_values.*.quantity'           => 'required|integer|min:0',

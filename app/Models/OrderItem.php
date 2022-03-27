@@ -2,12 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class OrderItem extends BaseModel
 {
-    use HasFactory, SoftDeletes;
+    use SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -22,5 +21,9 @@ class OrderItem extends BaseModel
         'quantity',
         'price',
         'discount_amount'
+    ];
+
+    protected $casts = [
+        'price' => 'double'
     ];
 }
