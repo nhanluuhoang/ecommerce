@@ -30,6 +30,9 @@ class User extends Authenticatable implements JWTSubject
         'address'
     ];
 
+    /**
+     * @var string[]
+     */
     protected $casts = [
         'address' => 'array'
     ];

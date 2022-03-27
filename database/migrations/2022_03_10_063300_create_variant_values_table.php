@@ -18,10 +18,9 @@ class CreateVariantValuesTable extends Migration
             $table->foreignId('product_id')->constrained('products');
             $table->foreignId('option_id')->constrained('options');
             $table->foreignId('value_id')->constrained('option_values');
-            $table->string('option_name');
-            $table->string('value_name');
+            $table->string('variant_value_name');
             $table->string('sku')->index();
-            $table->string('quantity');
+            $table->integer('quantity');
             $table->decimal('price', 15,2);
             $table->timestamps();
         });

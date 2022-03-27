@@ -20,8 +20,8 @@ class ProductFactory extends Factory
             'descriptions' => $this->faker->realText($maxNbChars = 250),
             'thumbnails'   => 'public/images.png',
             'price'        => $this->faker->randomFloat($nbMaxDecimals = null, $min = 0, $max = null),
-            'sku'          => $this->faker->numerify('000000000'),
-            'quantity'        => $this->faker->numberBetween($min = 1000, $max = 9000),
+            'sku'          => strtoupper(uniqid()),
+            'quantity'     => $this->faker->numberBetween($min = 1000, $max = 9000),
         ];
     }
 }
