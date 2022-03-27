@@ -25,6 +25,7 @@ class CreateProductsTable extends Migration
             $table->string('sku')->nullable()->index();
             $table->integer('quantity');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

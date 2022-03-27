@@ -3,10 +3,11 @@
 namespace App\Models;
 
 use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends BaseModel
 {
-    use Sluggable;
+    use Sluggable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -23,8 +24,12 @@ class Product extends BaseModel
         'price',
         'status',
         'sku',
-        'stock',
-        'details',
+        'quantity'
+    ];
+
+    protected $casts = [
+        'price'  => 'double',
+        'status' => 'boolean'
     ];
 
     /**
@@ -39,5 +44,52 @@ class Product extends BaseModel
                 'source' => 'title'
             ]
         ];
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function variantValues()
+    {
+        return $this->hasMany(VariantValue::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
+     */
+    public function options()
+    {
+        return $this->hasManyThrough(
+            Option::class,
+            VariantValue::class,
+            'product_id',
+            'id',
+            'id',
+            'option_id'
+        )->distinct();
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
+     */
+    public function optionValues()
+    {
+        return $this->hasManyThrough(
+            OptionValue::class,
+            VariantValue::class,
+            'product_id',
+            'id',
+            'id',
+            'value_id'
+
+        );
     }
 }
