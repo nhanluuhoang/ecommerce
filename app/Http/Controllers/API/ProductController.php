@@ -84,7 +84,7 @@ class ProductController extends ApiBaseController
                 $query->select('option_values.id', 'option_values.value_name');
             },
             'variantValues' => function ($query) {
-                $query->select('id', 'product_id', 'option_id', 'value_id', 'variant_value_name', 'sku', 'quantity', 'price');
+                $query->select('id', 'product_id', 'option_id', 'value_id', 'product_value_name', 'sku', 'quantity', 'price');
             }
         ])->first();
 

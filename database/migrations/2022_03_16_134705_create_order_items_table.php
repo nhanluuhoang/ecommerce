@@ -18,7 +18,7 @@ class CreateOrderItemsTable extends Migration
             $table->foreignId('product_id')->constrained('products');
             $table->foreignId('order_id')->constrained('orders');
             $table->string('product_title');
-            $table->string('product_variant_name');
+            $table->string('product_variant_name')->nullable();
             $table->integer('quantity');
             $table->decimal('price', 15,0);
             $table->decimal('discount_amount', 15,0)->nullable();

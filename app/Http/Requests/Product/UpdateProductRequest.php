@@ -38,7 +38,7 @@ class UpdateProductRequest extends FormRequest
             'option_values'                       => 'filled',
             'option_values.*.id'                  => 'sometimes|integer|exists:option_values,id',
             'option_values.*.value_name'          => 'sometimes|string',
-            'variant_values'                      => 'required_with_all:options,option_values',
+            'variant_values'                      => 'required_with:options,option_values',
             'variant_values.*.id'                 => 'sometimes|integer|exists:variant_values,id',
             'variant_values.*.option_id'          => [
                 'sometimes',
@@ -50,7 +50,7 @@ class UpdateProductRequest extends FormRequest
                 'integer',
                 new ExistOptionAndValueRule($this->get('option_values'))
             ],
-            'variant_values.*.variant_value_name' => 'sometimes|string',
+            'variant_values.*.product_value_name' => 'sometimes|string',
             'variant_values.*.sku'                => 'sometimes|string',
             'variant_values.*.price'              => 'sometimes|regex:/^[0-9]+(\.[0-9][0-9]?)?$/|min:0',
             'variant_values.*.quantity'           => 'sometimes|integer|min:0',
