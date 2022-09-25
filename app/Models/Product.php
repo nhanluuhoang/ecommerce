@@ -27,6 +27,10 @@ class Product extends BaseModel
         'quantity'
     ];
 
+    protected $appends = [
+        'category_title'
+    ];
+
     protected $casts = [
         'price'  => 'double',
         'status' => 'boolean'
@@ -44,6 +48,23 @@ class Product extends BaseModel
                 'source' => 'title'
             ]
         ];
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCategoryTitleAttribute()
+    {
+        return $this->category()->pluck('title')->first();
+    }
+
+    /**
+     * @param $value
+     * @return string
+     */
+    public function getThumbnailsAttribute($value): string
+    {
+        return config('ecommerce.app_url').'/assets/'.$value;
     }
 
     /**
@@ -91,5 +112,13 @@ class Product extends BaseModel
             'value_id'
 
         );
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function images()
+    {
+        return $this->morphMany(Attachments::class, 'attachable', 'attachable_type', 'attachable_id');
     }
 }

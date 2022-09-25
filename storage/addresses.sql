@@ -1,4 +1,4 @@
-insert into addresses (id, kind, name, parent_id)
+insert into addresses (id, kind, value, parent_id)
 values  (1, 0, 'Thành phố Cần Thơ', 0),
         (2, 1, 'Quận Ninh Kiều', 1),
         (3, 2, 'Phường Cái Khế', 2),

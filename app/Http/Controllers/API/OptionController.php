@@ -16,7 +16,7 @@ class OptionController extends ApiBaseController
     public function index()
     {
         $option = new Query(Option::class);
-        $option = $option->getColumn(['option_name'])->allowPaginate();
+        $option = $option->getColumn(['value'])->allowPaginate();
         return $this->httpOK($option);
     }
 

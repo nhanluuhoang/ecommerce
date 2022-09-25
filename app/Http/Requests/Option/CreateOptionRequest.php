@@ -24,7 +24,7 @@ class CreateOptionRequest extends FormRequest
     public function rules()
     {
         return [
-            'option_name' => 'required|string|unique:options,option_name'
+            'value' => 'required|string|unique:options,value'
         ];
     }
 }

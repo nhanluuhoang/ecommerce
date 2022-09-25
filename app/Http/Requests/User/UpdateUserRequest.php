@@ -26,14 +26,15 @@ class UpdateUserRequest extends FormRequest
     {
         return [
             'email'                => 'sometimes|email|unique:users,email',
-            'password'             => 'sometimes|string|min:8',
             'full_name'            => 'sometimes|string',
             'phone'                => 'sometimes|alpha_num|digits_between:10,11|unique:users,phone',
             'gender'               => ['sometimes', 'string', Rule::in(['male', 'female'])],
             'address'              => 'sometimes',
-            'address.*.address'    => 'required_with:address|string',
-            'address.*.address_id' => 'required_with:address|string',
-            'address.*.default'    => 'required_with:address|boolean',
+            'address.*.address'     => 'required_with:address|string',
+            'address.*.province_id' => 'required_with:address|integer|exists:addresses,id',
+            'address.*.district_id' => 'required_with:address|integer|exists:addresses,id',
+            'address.*.ward_id'     => 'required_with:address|integer|exists:addresses,id',
+            'address.*.default'     => 'required_with:address|boolean',
         ];
     }
 }

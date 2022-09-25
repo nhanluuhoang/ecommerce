@@ -30,7 +30,7 @@ class UpdateCategoryRequest extends FormRequest
                 'numeric',
                 'exists:categories,id',
             ],
-            'name'       => 'sometimes|string',
+            'title'       => 'sometimes|string',
             'sort_order' => 'sometimes|integer|min:0',
             'is_public'  => 'sometimes|boolean'
         ];

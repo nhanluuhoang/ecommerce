@@ -6,7 +6,7 @@ use App\Http\Requests\Category\CreateCategoryRequest;
 use App\Http\Requests\Category\UpdateCategoryRequest;
 use App\Models\Category;
 use App\Queries\Query;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CategoryController extends ApiBaseController
 {
@@ -17,21 +17,19 @@ class CategoryController extends ApiBaseController
      * @throws \App\Exceptions\InvalidFilterQuery
      * @throws \App\Exceptions\InvalidSortQuery
      */
-    public function index(): \Illuminate\Http\JsonResponse
+    public function index()
     {
         $query = new Query(Category::class);
         $query = $query
-            ->getColumn(['name', 'slug', 'sort_order'])
-            ->filterBy([
-                'name' => 'partial'
-            ])
+            ->getColumn(['title', 'sort_order', 'is_public', 'parent_id'])
             ->customQuery([
-                $query->getQuery()->isPublic()
+                $query->getQuery()->orderBy('sort_order', 'asc')
             ])
-            ->sortFieldsBy(['name', 'sort_order'])
             ->allowPaginate();
 
-        return $this->httpOK($query);
+        $categories = $this->buildTree($query);
+
+        return $this->httpOK($categories);
     }
 
     /**
@@ -42,8 +40,16 @@ class CategoryController extends ApiBaseController
      */
     public function store(CreateCategoryRequest $request)
     {
-        $categories = Category::query()->create($request->validated());
-        return $this->httpCreated($categories);
+        DB::beginTransaction();
+        try {
+            Category::query()->create($request->validated());
+            DB::commit();
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            return $this->httpBadRequest(['message' => $exception->getMessage()]);
+        }
+
+        return $this->httpNoContent();
     }
 
     /**
@@ -54,6 +60,7 @@ class CategoryController extends ApiBaseController
      */
     public function show(Category $category)
     {
+        $category = Category::query()->with('parent')->findOrFail($category->id);
         return $this->httpOK($category);
     }
 
@@ -66,10 +73,17 @@ class CategoryController extends ApiBaseController
      */
     public function update(UpdateCategoryRequest $request, Category $category)
     {
-        $category->slug = null;
-        $category->update($request->validated());
+        DB::beginTransaction();
+        try {
+            $category->slug = null;
+            $category->update($request->validated());
+            DB::commit();
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            return $this->httpBadRequest(['message' => $exception->getMessage()]);
+        }
 
-        return $this->httpOK($category);
+        return $this->httpNoContent();
     }
 
     /**
@@ -82,5 +96,26 @@ class CategoryController extends ApiBaseController
     {
         $category->delete();
         return $this->httpNoContent();
+    }
+
+    /**
+     * @param $src_arr
+     * @param int $parent_id
+     * @return array
+     */
+    private function buildTree($src_arr, int $parent_id = 0): array
+    {
+        $tree = array();
+        foreach($src_arr as $idx => $row) {
+            if($row['parent_id'] == $parent_id) {
+                $subTree = $this->buildtree($src_arr, $row['id']);
+                if (count($subTree) > 0) {
+                    $row['children'] = $subTree;
+                }
+                $tree[] = $row;
+                unset($src_arr[$idx]);
+            }
+        }
+        return $tree;
     }
 }

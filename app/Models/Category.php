@@ -15,7 +15,7 @@ class Category extends BaseModel
      */
     protected $fillable = [
         'parent_id',
-        'name',
+        'title',
         'slug',
         'sort_order',
         'is_public',
@@ -34,7 +34,7 @@ class Category extends BaseModel
     {
         return [
             'slug' => [
-                'source' => 'name'
+                'source' => 'title'
             ]
         ];
     }
@@ -48,5 +48,21 @@ class Category extends BaseModel
     public function scopeIsPublic($query)
     {
         return $query->where('is_public', true);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function children()
+    {
+        return $this->hasOne(Category::class, 'parent_id', 'id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function parent()
+    {
+        return $this->hasOne(Category::class, 'id', 'parent_id');
     }
 }

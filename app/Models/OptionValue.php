@@ -11,7 +11,7 @@ class OptionValue extends BaseModel
      * @var array<int, string>
      */
     protected $fillable = [
-        'value_name'
+        'value'
     ];
 
     protected $hidden = ['laravel_through_key'];

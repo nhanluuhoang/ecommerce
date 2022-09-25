@@ -14,11 +14,21 @@ trait Response
      */
     public function httpOK($data): JsonResponse
     {
-        $arrData = $data->toArray();
+        $arrData = is_array($data) ? $data : $data->toArray();
+
         $resp = [
             'success' => true,
-            'data'    => empty($arrData['data']) ? $data : $arrData['data']
         ];
+
+        if (count($arrData) > 0) {
+            if (isset($arrData['data'])) {
+                $resp['data'] = $arrData['data'];
+            } else {
+                $resp['data'] = $arrData;
+            }
+        } else {
+            $resp['data'] = $arrData['data'];
+        }
 
         if (isset($arrData['current_page'])) {
             $resp['pagination'] = $this->getPagination($data);
@@ -84,12 +94,12 @@ trait Response
     private function getPagination($data): array
     {
         return [
-            'count'       => $data->count(),
-            'currentPage' => $data->currentPage(),
-            'links'       => $data->nextPageUrl(),
-            'perPage'     => $data->perPage(),
-            'total'       => $data->total(),
-            'totalPages'  => $data->lastPage()
+            'count'       => (int) $data->count(),
+            'currentPage' => (int) $data->currentPage(),
+            'links'       => (string) $data->nextPageUrl(),
+            'perPage'     => (int) $data->perPage(),
+            'total'       => (int) $data->total(),
+            'totalPages'  => (int) $data->lastPage()
         ];
     }
 }

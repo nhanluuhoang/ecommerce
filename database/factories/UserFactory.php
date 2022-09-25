@@ -17,12 +17,14 @@ class UserFactory extends Factory
             'full_name' => $this->faker->name(),
             'email'     => $this->faker->unique()->safeEmail(),
             'phone'     => $this->faker->e164PhoneNumber,
-            'password'  => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'password'  => 'password',
             'address'   => [
-                'address_1' => [
-                    'address'    => '39 Nguyễn Thị Diệu, Phường 6, Quận 3, TP.Hồ Chí Minh',
-                    'address_id' => '1165-1158-1013',
-                    'default'    => true
+                [
+                    'address'     => '39 Nguyễn Thị Diệu, Phường 6, Quận 3, TP.Hồ Chí Minh',
+                    'province_id' => 1013,
+                    'district_id' => 1158,
+                    'ward_id'     => 1165,
+                    'default'     => true
                 ]
             ]
         ];

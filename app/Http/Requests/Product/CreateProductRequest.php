@@ -28,16 +28,16 @@ class CreateProductRequest extends FormRequest
             'category_id'                         => 'required|integer|exists:categories,id',
             'title'                               => 'required|string|max:255',
             'descriptions'                        => 'required|string',
-            'thumbnails'                          => 'required|string',
+            'thumbnails.'                         => 'required|string|image64:jpeg,jpg,png|image64Size:' . config('ecommerce.file_size'),
             'price'                               => 'required|regex:/^[0-9]+(\.[0-9][0-9]?)?$/|min:0',
             'status'                              => 'required|boolean',
             'quantity'                            => 'required|integer|min:0',
             'options'                             => 'filled',
             'options.*.id'                        => 'required|integer|exists:options,id',
-            'options.*.option_name'               => 'required|string',
+            'options.*.value'                     => 'required|string',
             'option_values'                       => 'filled',
-            'option_values.*.id'                  => 'required|integer|exists:option_values,id',
-            'option_values.*.value_name'          => 'required|string',
+            'option_values.*.id'                  => 'sometimes|integer|exists:option_values,id',
+            'option_values.*.value'               => 'required|string',
             'variant_values'                      => 'required_if:options,option_values',
             'variant_values.*.option_id'          => [
                 'required',
@@ -53,6 +53,8 @@ class CreateProductRequest extends FormRequest
             'variant_values.*.sku'                => 'required|string',
             'variant_values.*.price'              => 'required|regex:/^[0-9]+(\.[0-9][0-9]?)?$/|min:0',
             'variant_values.*.quantity'           => 'required|integer|min:0',
+            'images'                              => 'required|array|max:8',
+            'images.*'                            => 'required|string|image64:jpeg,jpg,png|image64Size:' . config('ecommerce.file_size'),
         ];
     }
 }
