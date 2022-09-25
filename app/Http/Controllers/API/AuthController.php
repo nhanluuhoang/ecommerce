@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\User;
 
 class AuthController extends ApiBaseController
 {
@@ -31,6 +32,7 @@ class AuthController extends ApiBaseController
      */
     public function me() {
         $user = auth()->user();
+        $user['role'] = User::query()->findOrFail($user->id)->getRoleNames()[0];
         return $this->httpOK($user);
     }
 

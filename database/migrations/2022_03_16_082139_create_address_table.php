@@ -17,7 +17,7 @@ class CreateAddressTable extends Migration
         Schema::create('addresses', function (Blueprint $table) {
             $table->id();
             $table->integer('kind')->index();
-            $table->string('name');
+            $table->string('value');
             $table->integer('parent_id')->index();
         });
     }

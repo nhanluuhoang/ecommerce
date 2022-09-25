@@ -29,9 +29,9 @@ class CreateCategoryRequest extends FormRequest
                 'numeric',
                 'exists:categories,id'
             ],
-            'name'       => 'required|string',
-            'sort_order' => 'integer|min:0',
-            'is_public'  => 'boolean'
+            'title'       => 'required|string',
+            'sort_order' => 'integer|min:0|required',
+            'is_public'  => 'boolean|required'
         ];
     }
 }

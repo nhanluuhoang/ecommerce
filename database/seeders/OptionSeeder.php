@@ -16,19 +16,19 @@ class OptionSeeder extends Seeder
     {
         DB::table('options')->insert([
             [
-                'option_name' => 'Màu sắc',
+                'value' => 'Màu sắc',
             ],
             [
-                'option_name' => 'Kích thước',
+                'value' => 'Kích thước',
             ],
             [
-                'product_id' => 'Thể tích',
+                'value' => 'Thể tích',
             ],
             [
-                'product_id' => 'Mùi hương',
+                'value' => 'Mùi hương',
             ],
             [
-                'product_id' => 'Chất liệu',
+                'value' => 'Chất liệu',
             ],
         ]);
     }

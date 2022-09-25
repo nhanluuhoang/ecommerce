@@ -56,6 +56,8 @@ return [
         'array'   => 'Mảng :attribute phải có ít nhất :value phần tử.',
     ],
     'image'    => 'Trường :attribute phải là định dạng hình ảnh.',
+    'image64'  => 'Trường :attribute phải là một loại tệp: :values.',
+    'image64Size' => 'Dung lượng tập tin trong trường :attribute phải bằng :size kB.',
     'in'       => 'Giá trị đã chọn trong trường :attribute không hợp lệ.',
     'in_array' => 'Trường :attribute phải thuộc tập cho phép: :other.',
     'integer'  => 'Trường :attribute phải là một số nguyên.',

@@ -25,15 +25,17 @@ class CreateUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'email'                => 'required|email|unique:users,email',
-            'password'             => 'required|string|min:8',
-            'full_name'            => 'required|string',
-            'phone'                => 'required|alpha_num|digits_between:10,11|unique:users,phone',
-            'gender'               => ['required', 'string', Rule::in(['male', 'female'])],
-            'address'              => 'required',
-            'address.*.address'    => 'required_with:address|string',
-            'address.*.address_id' => 'required_with:address|string',
-            'address.*.default'    => 'required_with:address|boolean',
+            'email'                 => 'required|email|unique:users,email',
+            'password'              => 'required|string|min:8',
+            'full_name'             => 'required|string',
+            'phone'                 => 'required|alpha_num|digits_between:10,11|unique:users,phone',
+            'gender'                => ['required', 'string', Rule::in(['male', 'female'])],
+            'address'               => 'required',
+            'address.*.address'     => 'required_with:address|string',
+            'address.*.province_id' => 'required_with:address|integer|exists:addresses,id',
+            'address.*.district_id' => 'required_with:address|integer|exists:addresses,id',
+            'address.*.ward_id'     => 'required_with:address|integer|exists:addresses,id',
+            'address.*.default'     => 'required_with:address|boolean',
         ];
     }
 }

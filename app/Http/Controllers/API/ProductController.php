@@ -7,12 +7,25 @@ use App\Http\Requests\Product\UpdateProductRequest;
 use App\Models\Product;
 use App\Models\VariantValue;
 use App\Queries\Query;
+use App\Services\ProductService;
+use App\Services\UploadFileService;
 use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
 class ProductController extends ApiBaseController
 {
+
+    private $productService;
+
+    private $uploadFileService;
+
+    public function __construct()
+    {
+        $this->productService = new ProductService();
+        $this->uploadFileService = new UploadFileService();
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -20,8 +33,8 @@ class ProductController extends ApiBaseController
      */
     public function index()
     {
-        $products = new Query(Product::class);
-        $products = $products->filterBy([
+        $query = new Query(Product::class);
+        $products = $query->filterBy([
             'category_id' => '=',
             'title'       => 'partial',
             'sku'         => 'partial',
@@ -44,17 +57,20 @@ class ProductController extends ApiBaseController
         $data = $request->validated();
         $data['sku'] = strtoupper(uniqid());
         $variantValues = Arr::get($data, 'variant_values', []);
+        $images = Arr::get($data, 'images', []);
+        $dataProduct = Arr::except($data, 'thumbnails');
 
         DB::beginTransaction();
         try {
-            $product = Product::query()->create($data);
+            $product = Product::query()->create($dataProduct);
+            $thumbnails = $this->uploadFileService->createImageBase64($product->id, $data['thumbnails'], Product::class, false);
 
-            foreach ($variantValues as $item) {
-                $item['product_id'] = $product->id;
-                $item['sku'] = strtoupper(uniqid());
+            $product->thumbnails = $thumbnails;
+            $product->save();
 
-                VariantValue::query()->create($item);
-            }
+            $this->productService->createVariantValue($product->id, $variantValues);
+
+            $this->uploadFileService->createImageBase64($product->id, $images, Product::class);
 
             DB::commit();
         } catch (Exception $exception) {
@@ -74,17 +90,17 @@ class ProductController extends ApiBaseController
     public function show(Product $product)
     {
         $product = Product::query()->where('id', $product->id)->with([
-            'category'      => function ($query) {
-                $query->select('id', 'name', 'slug');
-            },
             'options'       => function ($query) {
-                $query->select('options.id', 'options.option_name');
+                $query->select('options.id', 'options.value');
             },
             'optionValues'  => function ($query) {
-                $query->select('option_values.id', 'option_values.value_name');
+                $query->select('option_values.id', 'option_values.value');
             },
             'variantValues' => function ($query) {
                 $query->select('id', 'product_id', 'option_id', 'value_id', 'product_value_name', 'sku', 'quantity', 'price');
+            },
+            'images' => function ($query) {
+                $query->select('id', 'attachable_id', 'attachable_type', 'path');
             }
         ])->first();
 
@@ -106,29 +122,7 @@ class ProductController extends ApiBaseController
         DB::beginTransaction();
         try {
             $product->update($data);
-
-            $tmpVariantValues = [];
-            foreach ($variantValues as $item) {
-                if (isset($item['id'])) {
-                    $variantValues = VariantValue::query()->findOrFail($item['id']);
-                    $variantValues->update($item);
-                    $tmpVariantValues[] = $item['id'];
-                } else {
-                    $item['product_id'] = $product->id;
-                    $item['sku'] = strtoupper(uniqid());
-                    $variantValue = VariantValue::query()->create($item);
-                    $tmpVariantValues[] = $variantValue->id;
-                }
-            }
-
-            // delete variant values
-            $variantValuesOld = VariantValue::query()
-                ->select('id')
-                ->where('product_id', $product->id)
-                ->get()
-                ->pluck('id');
-            $arrDiff = array_diff($tmpVariantValues, $variantValuesOld->toArray());
-            VariantValue::query()->whereIn('id', $arrDiff)->delete();
+            $this->productService->updateVariantValue($product->id, $variantValues);
 
             DB::commit();
         } catch (Exception $exception) {

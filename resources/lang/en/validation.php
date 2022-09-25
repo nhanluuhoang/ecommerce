@@ -62,6 +62,8 @@ return [
         'array' => 'The :attribute must have :value items or more.',
     ],
     'image' => 'The :attribute must be an image.',
+    'image64' => 'The :attribute must be a file of type: :values.',
+    'image64Size' => 'The :attribute must be :size kilobytes.',
     'in' => 'The selected :attribute is invalid.',
     'in_array' => 'The :attribute field does not exist in :other.',
     'integer' => 'The :attribute must be an integer.',

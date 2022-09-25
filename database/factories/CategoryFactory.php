@@ -14,9 +14,10 @@ class CategoryFactory extends Factory
     public function definition()
     {
         return [
-            'name'       => $this->faker->realText($maxNbChars = 10),
+            'title'      => $this->faker->realText($maxNbChars = 10),
             'sort_order' => $this->faker->randomNumber(1),
             'is_public'  => $this->faker->randomElement([true, false]),
         ];
     }
+
 }

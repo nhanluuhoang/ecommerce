@@ -15,7 +15,7 @@ class CreateOptionValuesTable extends Migration
     {
         Schema::create('option_values', function (Blueprint $table) {
             $table->id();
-            $table->string('value_name')->unique();
+            $table->string('value')->unique();
             $table->timestamps();
         });
     }
