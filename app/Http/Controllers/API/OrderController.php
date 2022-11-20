@@ -85,15 +85,9 @@ class OrderController extends ApiBaseController
     public function show(Order $order)
     {
         $order = Order::query()->where('id', $order->id)->with([
-            'orderItems' => function ($query) {
-                $query->select('id', 'product_id', 'order_id', 'product_title', 'quantity', 'price', 'discount_amount');
-            },
-            'shipment' => function ($query) {
-                $query->select('id', 'order_id', 'invoice_id', 'full_name', 'phone', 'address', 'order_code', 'shipment_date');
-            },
-            'invoice' => function ($query) {
-                $query->select('id', 'order_id', 'invoice_status_code', 'invoice_date', 'total_amount', 'total_discount', 'order_code');
-            }
+            'orderItems: id, product_id, order_id, product_title, quantity, price, discount_amount',
+            'shipment: id, order_id, invoice_id, full_name, phone, address, order_code, shipment_date',
+            'invoice: id, order_id, invoice_status_code, invoice_date, total_amount, total_discount, order_code'
         ])->first();
         return $this->httpOK($order);
     }

@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Category;
 
+use App\Enums\CategoryTypeEnum;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class CreateCategoryRequest extends FormRequest
 {
@@ -29,9 +31,10 @@ class CreateCategoryRequest extends FormRequest
                 'numeric',
                 'exists:categories,id'
             ],
-            'title'       => 'required|string',
+            'title'      => 'required|string',
             'sort_order' => 'integer|min:0|required',
-            'is_public'  => 'boolean|required'
+            'is_public'  => 'boolean|required',
+            'type'       => ['required', Rule::in(CategoryTypeEnum::getValues())]
         ];
     }
 }

@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Category;
 
+use App\Enums\CategoryTypeEnum;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateCategoryRequest extends FormRequest
 {
@@ -32,7 +34,8 @@ class UpdateCategoryRequest extends FormRequest
             ],
             'title'       => 'sometimes|string',
             'sort_order' => 'sometimes|integer|min:0',
-            'is_public'  => 'sometimes|boolean'
+            'is_public'  => 'sometimes|boolean',
+            'type'       => ['required', Rule::in(CategoryTypeEnum::getValues())]
         ];
     }
 }

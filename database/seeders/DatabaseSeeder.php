@@ -19,7 +19,9 @@ class DatabaseSeeder extends Seeder
             OptionSeeder::class,
             ProductSeeder::class,
             AddressSeeder::class,
-            ShelfRolesSeeder::class
+            ShelfRolesSeeder::class,
+            SettingSeeder::class,
+            BannerSeeder::class
         ]);
     }
 }

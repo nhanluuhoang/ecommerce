@@ -62,9 +62,25 @@ class Product extends BaseModel
      * @param $value
      * @return string
      */
-    public function getThumbnailsAttribute($value): string
+    public function getThumbnailsAttribute($value)
     {
         return config('ecommerce.app_url').'/assets/'.$value;
+    }
+
+    public function getPriceAttribute($value)
+    {
+        $price = number_format($value, 0, '', '.');
+        $prices = $this->variantValues()->get()->pluck('price')->toArray();
+        if (count($prices) > 0) {
+            $min = min($prices);
+            $max = max($prices);
+            if ($min == $max) return $price;
+
+            $price = number_format($min, 0, '', '.') .' - '.
+                number_format($max, 0, '', '.');
+        }
+
+        return $price;
     }
 
     /**
@@ -109,8 +125,7 @@ class Product extends BaseModel
             'product_id',
             'id',
             'id',
-            'value_id'
-
+            'product_id'
         );
     }
 

@@ -17,6 +17,7 @@ class Category extends BaseModel
         'parent_id',
         'title',
         'slug',
+        'type',
         'sort_order',
         'is_public',
     ];

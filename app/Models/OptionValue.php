@@ -14,5 +14,6 @@ class OptionValue extends BaseModel
         'value'
     ];
 
-    protected $hidden = ['laravel_through_key'];
+    protected $hidden = ['laravel_through_key', 'pivot'];
+
 }

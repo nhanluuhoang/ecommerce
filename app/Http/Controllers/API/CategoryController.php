@@ -21,7 +21,7 @@ class CategoryController extends ApiBaseController
     {
         $query = new Query(Category::class);
         $query = $query
-            ->getColumn(['title', 'sort_order', 'is_public', 'parent_id'])
+            ->getColumn(['title', 'sort_order', 'is_public', 'parent_id', 'type'])
             ->customQuery([
                 $query->getQuery()->orderBy('sort_order', 'asc')
             ])

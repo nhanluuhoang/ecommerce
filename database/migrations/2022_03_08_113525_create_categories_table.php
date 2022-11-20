@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\CategoryTypeEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -17,7 +18,8 @@ class CreateCategoriesTable extends Migration
             $table->id();
             $table->integer('parent_id')->nullable();
             $table->string('title');
-            $table->string('slug');
+            $table->string('slug')->index();
+            $table->enum('type', CategoryTypeEnum::getValues());
             $table->integer('sort_order')->default(0);
             $table->boolean('is_public')->default(true);
             $table->timestamps();

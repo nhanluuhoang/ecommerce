@@ -18,7 +18,7 @@ trait PaginationQuery
         return $this->query->paginate(
             $this->pageSize ?? PageEnum::PAGE_SIZE,
             ['*'],
-            'page[number]',
+            'post[number]',
             $this->pageNumber ?? PageEnum::PAGE_NUMBER
         );
     }

@@ -23,6 +23,8 @@ use App\Http\Controllers\API\OrderController;
 Route::middleware('language')->group(function () {
     Route::post('login', [AuthController::class, 'login']);
 
+    Route::apiResource('products', ProductController::class)->only(['show']);
+
     Route::middleware('auth')->group(function () {
         Route::get('me', [AuthController::class, 'me']);
         Route::delete('logout', [AuthController::class, 'logout']);
@@ -36,7 +38,7 @@ Route::middleware('language')->group(function () {
 
         Route::apiResource('option-values', OptionValueController::class)->except(['update', 'destroy']);
 
-        Route::apiResource('products', ProductController::class);
+        Route::apiResource('products', ProductController::class)->except(['show']);
 
         Route::apiResource('orders', OrderController::class);
     });

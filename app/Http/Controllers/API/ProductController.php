@@ -5,7 +5,6 @@ namespace App\Http\Controllers\API;
 use App\Http\Requests\Product\CreateProductRequest;
 use App\Http\Requests\Product\UpdateProductRequest;
 use App\Models\Product;
-use App\Models\VariantValue;
 use App\Queries\Query;
 use App\Services\ProductService;
 use App\Services\UploadFileService;
@@ -89,20 +88,34 @@ class ProductController extends ApiBaseController
      */
     public function show(Product $product)
     {
-        $product = Product::query()->where('id', $product->id)->with([
-            'options'       => function ($query) {
-                $query->select('options.id', 'options.value');
-            },
-            'optionValues'  => function ($query) {
-                $query->select('option_values.id', 'option_values.value');
-            },
-            'variantValues' => function ($query) {
-                $query->select('id', 'product_id', 'option_id', 'value_id', 'product_value_name', 'sku', 'quantity', 'price');
-            },
-            'images' => function ($query) {
-                $query->select('id', 'attachable_id', 'attachable_type', 'path');
-            }
-        ])->first();
+        $productID = $product->id;
+        $product = Product::query()
+            ->where('id', $productID)
+            ->with([
+                'options'       => function ($query) use ($productID) {
+                    return $query->select('options.id', 'options.value')
+                        ->with('optionValues', function ($query) use ($productID) {
+                            return $query->select('option_values.id', 'option_values.value')
+                                ->where('product_id', $productID);
+                        });
+                },
+                'variantValues' => function ($query) {
+                    $query->select(
+                        'id',
+                        'product_id',
+                        'option_id',
+                        'value_id',
+                        'product_value_name',
+                        'sku',
+                        'quantity',
+                        'price'
+                    );
+                },
+                'images'        => function ($query) {
+                    $query->select('id', 'attachable_id', 'attachable_type', 'path');
+                }
+            ])
+            ->first();
 
         return $this->httpOK($product);
     }

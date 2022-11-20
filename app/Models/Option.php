@@ -14,5 +14,17 @@ class Option extends BaseModel
         'value'
     ];
 
-    protected $hidden = ['laravel_through_key'];
+    protected $hidden = ['laravel_through_key', 'pivot'];
+
+    public function optionValues()
+    {
+        return $this->hasManyThrough(
+            OptionValue::class,
+            VariantValue::class,
+            'option_id',
+            'id',
+            'id',
+            'value_id'
+        );
+    }
 }
